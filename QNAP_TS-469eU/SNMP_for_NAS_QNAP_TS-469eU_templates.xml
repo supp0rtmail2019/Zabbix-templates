@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>6.4</version>
+    <template_groups>
+        <template_group>
+            <uuid>5bd872ddbf2d48dcafef7488428d72c8</uuid>
+            <name>__Add_Temp</name>
+        </template_group>
+    </template_groups>
+    <templates>
+        <template>
+            <uuid>d0627c083b6648448c4403321b809bec</uuid>
+            <template>SNMP for NAS QNAP TS-469eU</template>
+            <name>SNMP for NAS QNAP TS-469eU</name>
+            <description>SNMP for NAS QNAP TS-469eU
+QTS 5.1.5.2645</description>
+            <groups>
+                <group>
+                    <name>__Add_Temp</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <uuid>21e92abc0fea4f4bbdc4ea04510af038</uuid>
+                    <name>CPU temperature</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.55062.1.12.10.0</snmp_oid>
+                    <key>cpu.tem</key>
+                    <units>°C</units>
+                    <preprocessing>
+                        <step>
+                            <type>REGEX</type>
+                            <parameters>
+                                <parameter>(^\d\d)</parameter>
+                                <parameter>\1</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <triggers>
+                        <trigger>
+                            <uuid>6752efbd7dfe4763bfa47926dc8750b1</uuid>
+                            <expression>last(/SNMP for NAS QNAP TS-469eU/cpu.tem,#10)&gt;75</expression>
+                            <name>High CPU temperature</name>
+                            <priority>HIGH</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>c9cc4ffb685c4ca293beed21283b896d</uuid>
+                    <name>Free RAM memory</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.24681.1.3.3.0</snmp_oid>
+                    <key>free.ram.mem</key>
+                    <units>B</units>
+                    <triggers>
+                        <trigger>
+                            <uuid>e14fc0cdeb4641f5b8a8ac05856c314a</uuid>
+                            <expression>min(/SNMP for NAS QNAP TS-469eU/free.ram.mem,15m)&lt;1073741824</expression>
+                            <name>High memory utilization</name>
+                            <priority>AVERAGE</priority>
+                            <description>1gb = 1073741824</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>10fa80fd0d144351b0f01594b8a8f1e3</uuid>
+                    <name>Firmware version</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.55062.1.12.6.0</snmp_oid>
+                    <key>qnap.sys.firmware[version]</key>
+                    <delay>12h</delay>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <preprocessing>
+                        <step>
+                            <type>REGEX</type>
+                            <parameters>
+                                <parameter>(\d.*)</parameter>
+                                <parameter>\1</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <triggers>
+                        <trigger>
+                            <uuid>0e48d9c5ea034360ae430b3b256f9b50</uuid>
+                            <expression>(last(/SNMP for NAS QNAP TS-469eU/qnap.sys.firmware[version],#1)&lt;&gt;last(/SNMP for NAS QNAP TS-469eU/qnap.sys.firmware[version],#2))=1</expression>
+                            <recovery_mode>NONE</recovery_mode>
+                            <name>QNAP server: Version has changed</name>
+                            <priority>WARNING</priority>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>23a8acac82914d2ab4cc4a9ccbbf2087</uuid>
+                    <name>CPU usage</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.24681.1.2.1.0</snmp_oid>
+                    <key>sys.cpu.us</key>
+                    <value_type>FLOAT</value_type>
+                    <units>%</units>
+                    <preprocessing>
+                        <step>
+                            <type>REGEX</type>
+                            <parameters>
+                                <parameter>([0-9]+\.[0-9]+)</parameter>
+                                <parameter>\1</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <triggers>
+                        <trigger>
+                            <uuid>5a7245dfbc1f4ec5b5d993164cf604d8</uuid>
+                            <expression>min(/SNMP for NAS QNAP TS-469eU/sys.cpu.us,30m)&gt;85</expression>
+                            <name>NAS QNAP TS-469 CPU usage is more than 85% (30min)</name>
+                            <priority>WARNING</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>5ba00c99c4ad4a82bbb3f3c2fa16f341</uuid>
+                    <name>System temperature</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.24681.1.2.6.0</snmp_oid>
+                    <key>sys.tem</key>
+                    <units>°C</units>
+                    <preprocessing>
+                        <step>
+                            <type>REGEX</type>
+                            <parameters>
+                                <parameter>(^\d\d)</parameter>
+                                <parameter>\1</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <uuid>ff669308bd6b4f79b5da843e51d7981d</uuid>
+                    <name>System uptime</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.24681.1.3.4.0</snmp_oid>
+                    <key>sys.uptime</key>
+                    <history>1h</history>
+                    <trends>0</trends>
+                    <value_type>FLOAT</value_type>
+                    <units>s</units>
+                    <preprocessing>
+                        <step>
+                            <type>JAVASCRIPT</type>
+                            <parameters>
+                                <parameter>return value / 100</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <triggers>
+                        <trigger>
+                            <uuid>cd526c55d7ed4eae92b4bcdf92008d48</uuid>
+                            <expression>(last(/SNMP for NAS QNAP TS-469eU/sys.uptime,#1)&gt;last(/SNMP for NAS QNAP TS-469eU/sys.uptime,#2))=0</expression>
+                            <recovery_mode>NONE</recovery_mode>
+                            <name>Reboot system</name>
+                            <priority>WARNING</priority>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>e4bdf2442d3c45ea99d1c970b35218fb</uuid>
+                    <name>Total RAM memory</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.24681.1.3.2.0</snmp_oid>
+                    <key>to.ram.mem</key>
+                    <value_type>FLOAT</value_type>
+                    <units>B</units>
+                </item>
+            </items>
+            <discovery_rules>
+                <discovery_rule>
+                    <uuid>95c3c9b5f6804bf4925a518eaa7a8c44</uuid>
+                    <name>HDD</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>discovery[{#IFDISK}, .1.3.6.1.4.1.55062.1.10.2.1.1, {#IFSNDISK}, .1.3.6.1.4.1.55062.1.10.2.1.5, {#IFDISKMOD}, .1.3.6.1.4.1.24681.1.4.1.1.1.1.5.2.1.8]</snmp_oid>
+                    <key>hdd.number</key>
+                    <description>Hdd ststus</description>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>14950649a9d6439fa4d730de89361acb</uuid>
+                            <name>Status SMART HDD {#IFDISK} {#IFDISKMOD} {#IFSNDISK}</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>.1.3.6.1.4.1.55062.1.10.2.1.7.{#IFDISK}</snmp_oid>
+                            <key>hdd.status.smart[{#IFDISK}]</key>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>781ae8ab0dd44bdd95fbb4ef7d1b358a</uuid>
+                                    <expression>find(/SNMP for NAS QNAP TS-469eU/hdd.status.smart[{#IFDISK}],,&quot;like&quot;,&quot;Good&quot;)=0</expression>
+                                    <name>{#IFDISK} SMART status isn't good.</name>
+                                    <priority>DISASTER</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>0eccb6fd0c594c92b70cf50f73e120e5</uuid>
+                            <name>Temperature HDD {#IFDISK} {#IFDISKMOD} {#IFSNDISK}</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>1.3.6.1.4.1.55062.1.10.2.1.8.{#IFDISK}</snmp_oid>
+                            <key>hdd.teperatur[{#IFDISK}]</key>
+                            <units>°C</units>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>e8537432d553458aaf5dde1bb1a9e307</uuid>
+                                    <expression>last(/SNMP for NAS QNAP TS-469eU/hdd.teperatur[{#IFDISK}],#2)&gt;45</expression>
+                                    <name>High disk temperature {#IFDISK}</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+                <discovery_rule>
+                    <uuid>45a66fc9a9254b01a2faa6b073bc5d5b</uuid>
+                    <name>Volumes</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>discovery[{#IFSYSVOL}, .1.3.6.1.4.1.55062.1.10.9.1.1, {#IFSYSVOLNAME}, .1.3.6.1.4.1.24681.1.4.1.1.1.2.3.2.1.8]</snmp_oid>
+                    <key>hdd.sys.vol</key>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>9b97b5b39bf743948737a3a1444e127d</uuid>
+                            <name>Volume {#IFSYSVOLNAME} capacity memory</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>.1.3.6.1.4.1.55062.1.10.9.1.3.{#IFSYSVOL}</snmp_oid>
+                            <key>vol.cap[{#IFSYSVOL}]</key>
+                            <value_type>FLOAT</value_type>
+                            <units>B</units>
+                            <preprocessing>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <parameters>
+                                        <parameter>1024</parameter>
+                                    </parameters>
+                                </step>
+                                <step>
+                                    <type>DISCARD_UNCHANGED_HEARTBEAT</type>
+                                    <parameters>
+                                        <parameter>1d</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>8c3ea095101f4421a1ecba4cf0fd1ebc</uuid>
+                            <name>Volume {#IFSYSVOLNAME} free memory</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>.1.3.6.1.4.1.55062.1.10.9.1.4.{#IFSYSVOL}</snmp_oid>
+                            <key>vol.free[{#IFSYSVOL}]</key>
+                            <value_type>FLOAT</value_type>
+                            <units>B</units>
+                            <preprocessing>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <parameters>
+                                        <parameter>1024</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>cf10a880c9784d188e99c0da000065d7</uuid>
+                            <name>Volume {#IFSYSVOLNAME} used memory in %</name>
+                            <type>CALCULATED</type>
+                            <key>vol.used.in[{#IFSYSVOL}]</key>
+                            <units>%</units>
+                            <params>100*last(//vol.used[{#IFSYSVOL}])/last(//vol.cap[{#IFSYSVOL}])</params>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>3ab02568e0b940dd95595b560171eccc</uuid>
+                                    <expression>last(/SNMP for NAS QNAP TS-469eU/vol.used.in[{#IFSYSVOL}])&gt;98</expression>
+                                    <name>Volume {#IFSYSVOLNAME} iis FULL!</name>
+                                    <priority>DISASTER</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <uuid>da1c5db9c43648ecb2e067f612fca217</uuid>
+                                    <expression>last(/SNMP for NAS QNAP TS-469eU/vol.used.in[{#IFSYSVOL}])&gt;80</expression>
+                                    <name>Volume {#IFSYSVOLNAME} uses more than 80%</name>
+                                    <priority>WARNING</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <uuid>5685caa3bc934b408d100b50307e18d5</uuid>
+                                    <expression>last(/SNMP for NAS QNAP TS-469eU/vol.used.in[{#IFSYSVOL}])&gt;90</expression>
+                                    <name>Volume {#IFSYSVOLNAME} uses more than 90%</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>d47fc9c993ff4772b798c7f5c3004c67</uuid>
+                            <name>Volume {#IFSYSVOLNAME} used memory</name>
+                            <type>CALCULATED</type>
+                            <key>vol.used[{#IFSYSVOL}]</key>
+                            <value_type>FLOAT</value_type>
+                            <units>B</units>
+                            <params>last(//vol.cap[{#IFSYSVOL}])-last(//vol.free[{#IFSYSVOL}])</params>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+                <discovery_rule>
+                    <uuid>e839640374f74ecc9974d3649ce7cf3b</uuid>
+                    <name>RAID</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>discovery[{#RAIDINDEX}, .1.3.6.1.4.1.55062.1.10.5.1.2,{#RAIDNAME}, .1.3.6.1.4.1.55062.1.10.5.1.3,{#RAIDLEVEL},.1.3.6.1.4.1.24681.1.4.1.1.1.2.1.2.1.7]</snmp_oid>
+                    <key>raid.nas</key>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>68b30109debd4d3e85242b4f613df75f</uuid>
+                            <name>RAID {#RAIDNAME} status</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>.1.3.6.1.4.1.24681.1.4.1.1.1.2.1.2.1.5.{#RAIDINDEX}</snmp_oid>
+                            <key>raid.nas.stat[{#RAIDINDEX}]</key>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <preprocessing>
+                                <step>
+                                    <type>DISCARD_UNCHANGED_HEARTBEAT</type>
+                                    <parameters>
+                                        <parameter>1d</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>750b9c7a6aee444e93f73c82aab743aa</uuid>
+                                    <expression>find(/SNMP for NAS QNAP TS-469eU/raid.nas.stat[{#RAIDINDEX}],,&quot;like&quot;,&quot;Ready&quot;)=0</expression>
+                                    <name>RAID {#RAIDNAME} status has changed</name>
+                                    <priority>DISASTER</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>b71a94d57f4743cc905dafdca5e0406f</uuid>
+                            <name>RAID({#RAIDLEVEL}) {#RAIDNAME} total memory</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>.1.3.6.1.4.1.24681.1.4.1.1.1.2.1.2.1.3.{#RAIDINDEX}</snmp_oid>
+                            <key>raid.tot.mem[{#RAIDINDEX}]</key>
+                            <delay>12h</delay>
+                            <trends>0</trends>
+                            <units>B</units>
+                            <preprocessing>
+                                <step>
+                                    <type>DISCARD_UNCHANGED_HEARTBEAT</type>
+                                    <parameters>
+                                        <parameter>1d</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+            </discovery_rules>
+        </template>
+    </templates>
+</zabbix_export>

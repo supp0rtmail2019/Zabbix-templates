@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>6.4</version>
+    <template_groups>
+        <template_group>
+            <uuid>5bd872ddbf2d48dcafef7488428d72c8</uuid>
+            <name>__Add_Temp</name>
+        </template_group>
+    </template_groups>
+    <templates>
+        <template>
+            <uuid>45e5d07ad15a42eb8479ee841b9898c5</uuid>
+            <template>HTTP ALT-F D-Link DNS-325</template>
+            <name>HTTP ALT-F D-Link DNS-325</name>
+            <groups>
+                <group>
+                    <name>__Add_Temp</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <uuid>16629612f5d74e9eb6751184ea13e387</uuid>
+                    <name>Свободное место на диске D-Link</name>
+                    <type>DEPENDENT</type>
+                    <key>availabledisk.dlink325</key>
+                    <delay>0</delay>
+                    <units>%</units>
+                    <preprocessing>
+                        <step>
+                            <type>REGEX</type>
+                            <parameters>
+                                <parameter>Mounted Filesystems[\s\S]*?width: (\d+)%</parameter>
+                                <parameter>\1</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>status.dlink325</key>
+                    </master_item>
+                    <triggers>
+                        <trigger>
+                            <uuid>ac1bf1112369471f9523ef0fed6a89f3</uuid>
+                            <expression>last(/HTTP ALT-F D-Link DNS-325/availabledisk.dlink325)&gt;=85</expression>
+                            <name>Диск заполнен на 85%</name>
+                            <priority>WARNING</priority>
+                        </trigger>
+                        <trigger>
+                            <uuid>0dbe428c98414a70bff8ca8f65c163ce</uuid>
+                            <expression>last(/HTTP ALT-F D-Link DNS-325/availabledisk.dlink325)&gt;=95</expression>
+                            <name>Диск заполнен на 95%</name>
+                            <priority>HIGH</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>49f2c1b87ce44644a5077b2acec52b14</uuid>
+                    <name>Скорость вентилятора D-Link DNS-325</name>
+                    <type>DEPENDENT</type>
+                    <key>fanspeed.dlink325</key>
+                    <delay>0</delay>
+                    <units>%</units>
+                    <preprocessing>
+                        <step>
+                            <type>REGEX</type>
+                            <parameters>
+                                <parameter>Fan speed[\s\S]*?width: (\d+)%</parameter>
+                                <parameter>\1</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>status.dlink325</key>
+                    </master_item>
+                </item>
+                <item>
+                    <uuid>8fe3401c0df64bfca9996e9ca2e991f6</uuid>
+                    <name>Загрузка системы D-Link DNS-325</name>
+                    <type>DEPENDENT</type>
+                    <key>loadsys.dlink325</key>
+                    <delay>0</delay>
+                    <value_type>FLOAT</value_type>
+                    <preprocessing>
+                        <step>
+                            <type>REGEX</type>
+                            <parameters>
+                                <parameter>Load[\s\S]*?;&quot;&gt;(\d+(\.\d+)?)</parameter>
+                                <parameter>\1</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>status.dlink325</key>
+                    </master_item>
+                </item>
+                <item>
+                    <uuid>dce27ffad70141d39fe0ed55cb9a00c4</uuid>
+                    <name>Проверка d-link http</name>
+                    <type>HTTP_AGENT</type>
+                    <key>status.dlink325</key>
+                    <delay>5m</delay>
+                    <history>0</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <preprocessing>
+                        <step>
+                            <type>REGEX</type>
+                            <parameters>
+                                <parameter>Checking this will refresh different sections in the page every 10 to 20 seconds([\s\S]*)</parameter>
+                                <parameter>\1</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <timeout>5s</timeout>
+                    <url>http://192.168.1.135/cgi-bin/status.cgi</url>
+                </item>
+                <item>
+                    <uuid>29bf4d7148c041c492b6224cb7082b15</uuid>
+                    <name>Температура левого диска D-Link DNS-325</name>
+                    <type>DEPENDENT</type>
+                    <key>temperleftdisk.dlink325</key>
+                    <delay>0</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>°C</units>
+                    <preprocessing>
+                        <step>
+                            <type>REGEX</type>
+                            <parameters>
+                                <parameter>Disks[\s\S]*?id&gt; (\d+)&amp;deg;[\s\S]*?id&gt; (\d+)&amp;deg;</parameter>
+                                <parameter>\1</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>status.dlink325</key>
+                    </master_item>
+                    <triggers>
+                        <trigger>
+                            <uuid>d4bf6bb887d74be88f14af523d1c9e91</uuid>
+                            <expression>last(/HTTP ALT-F D-Link DNS-325/temperleftdisk.dlink325)&gt;=40</expression>
+                            <name>Левый диск нагрелся до 40</name>
+                            <priority>WARNING</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>65126c8f90cb40d8b90ec4a03e85586d</uuid>
+                    <name>Температура правого диска D-Link DNS-325</name>
+                    <type>DEPENDENT</type>
+                    <key>temperrightdisk.dlink325</key>
+                    <delay>0</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>°C</units>
+                    <preprocessing>
+                        <step>
+                            <type>REGEX</type>
+                            <parameters>
+                                <parameter>Disks[\s\S]*?id&gt; (\d+)&amp;deg;[\s\S]*?id&gt; (\d+)&amp;deg;</parameter>
+                                <parameter>\2</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>status.dlink325</key>
+                    </master_item>
+                    <triggers>
+                        <trigger>
+                            <uuid>461c9a7f8ea54535b3ed53881ad4ff3f</uuid>
+                            <expression>last(/HTTP ALT-F D-Link DNS-325/temperrightdisk.dlink325)&gt;=40</expression>
+                            <name>Правый диск нагрелся до 40</name>
+                            <priority>WARNING</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>c962cc291d9e4f1cafe46e2146a0453c</uuid>
+                    <name>Температура системы D-Link DNS-325</name>
+                    <type>DEPENDENT</type>
+                    <key>tempersys.dlink325</key>
+                    <delay>0</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>°C</units>
+                    <preprocessing>
+                        <step>
+                            <type>REGEX</type>
+                            <parameters>
+                                <parameter>Temperature[\s\S]*?(\d+\.\d+)&amp;deg;</parameter>
+                                <parameter>\1</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>status.dlink325</key>
+                    </master_item>
+                    <triggers>
+                        <trigger>
+                            <uuid>9404012b15dd4982979e40b3405b6944</uuid>
+                            <expression>last(/HTTP ALT-F D-Link DNS-325/tempersys.dlink325)&gt;=39.0</expression>
+                            <name>Система начала нагреваться</name>
+                            <priority>WARNING</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+            </items>
+        </template>
+    </templates>
+    <graphs>
+        <graph>
+            <uuid>33438fe924b34aec9c67064ebca39588</uuid>
+            <name>Диск</name>
+            <show_work_period>NO</show_work_period>
+            <show_triggers>NO</show_triggers>
+            <graph_items>
+                <graph_item>
+                    <color>199C0D</color>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>HTTP ALT-F D-Link DNS-325</host>
+                        <key>availabledisk.dlink325</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <uuid>2c60ace9b9ba40a1abbc32c54ee6c4e7</uuid>
+            <name>Температура дисков и охлаждение</name>
+            <graph_items>
+                <graph_item>
+                    <drawtype>DASHED_LINE</drawtype>
+                    <color>199C0D</color>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>HTTP ALT-F D-Link DNS-325</host>
+                        <key>fanspeed.dlink325</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <color>F63100</color>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>HTTP ALT-F D-Link DNS-325</host>
+                        <key>temperleftdisk.dlink325</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <color>2774A4</color>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>HTTP ALT-F D-Link DNS-325</host>
+                        <key>temperrightdisk.dlink325</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <uuid>3956ccc4361f4327ac4741eadc6f615f</uuid>
+            <name>Температура системы и охлаждение</name>
+            <graph_items>
+                <graph_item>
+                    <drawtype>DASHED_LINE</drawtype>
+                    <color>199C0D</color>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>HTTP ALT-F D-Link DNS-325</host>
+                        <key>fanspeed.dlink325</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>F7941D</color>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>HTTP ALT-F D-Link DNS-325</host>
+                        <key>tempersys.dlink325</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+    </graphs>
+</zabbix_export>
